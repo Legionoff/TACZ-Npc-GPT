@@ -7,19 +7,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import ru.tacticalnpcs.common.NpcClass;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
-/** Creates loaded TaCZ weapon stacks from the live common-gun index. */
 public final class TaczWeaponFactory {
     private TaczWeaponFactory() {}
-
     public static ItemStack createRandomGun(NpcClass npcClass, HolderLookup.Provider registries) {
         if (!TaczBridge.isAvailable()) return ItemStack.EMPTY;
-
         List<CommonGunIndex> candidates = new ArrayList<>();
         TimelessAPI.getAllCommonGunIndex().forEach((id, index) -> {
             String type = String.valueOf(index.getType()).toLowerCase(Locale.ROOT);
@@ -30,7 +26,6 @@ public final class TaczWeaponFactory {
             };
             if (accepted) candidates.add(index);
         });
-
         if (candidates.isEmpty()) return ItemStack.EMPTY;
         CommonGunIndex selected = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
         ResourceLocation gunId = selected.getPojo().getId();
