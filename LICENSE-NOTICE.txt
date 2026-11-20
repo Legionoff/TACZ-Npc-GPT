@@ -1,0 +1,3 @@
+Tactical NPCs source scaffold is provided for evaluation and further development.
+The six skin PNGs are user-provided assets and are included unchanged.
+TaCZ Refabricated is a separate third-party mod; it is not included in this archive.
