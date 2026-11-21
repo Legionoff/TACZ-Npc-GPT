@@ -1,6 +1,5 @@
 package ru.tacticalnpcs.entity;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,6 +12,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import ru.tacticalnpcs.common.Faction;
 import ru.tacticalnpcs.common.NpcClass;
 import ru.tacticalnpcs.common.TeammateOrder;
@@ -80,19 +81,19 @@ public final class TacticalNpcEntity extends PathfinderMob {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putString("NpcFaction", getFaction().name());
-        tag.putString("NpcClass", getNpcClass().name());
-        tag.putString("NpcOrder", getOrder().name());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putString("NpcFaction", getFaction().name());
+        output.putString("NpcClass", getNpcClass().name());
+        output.putString("NpcOrder", getOrder().name());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setFaction(parseEnum(Faction.class, tag.getString("NpcFaction"), Faction.TEAMMATE));
-        setNpcClass(parseEnum(NpcClass.class, tag.getString("NpcClass"), NpcClass.ASSAULT));
-        setOrder(parseEnum(TeammateOrder.class, tag.getString("NpcOrder"), TeammateOrder.WANDER));
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setFaction(parseEnum(Faction.class, input.getStringOr("NpcFaction", Faction.TEAMMATE.name()), Faction.TEAMMATE));
+        setNpcClass(parseEnum(NpcClass.class, input.getStringOr("NpcClass", NpcClass.ASSAULT.name()), NpcClass.ASSAULT));
+        setOrder(parseEnum(TeammateOrder.class, input.getStringOr("NpcOrder", TeammateOrder.WANDER.name()), TeammateOrder.WANDER));
     }
 
     private static <T extends Enum<T>> T parseEnum(Class<T> type, String value, T fallback) {
