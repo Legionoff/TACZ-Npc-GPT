@@ -13,7 +13,7 @@ public final class DebugCommands {
             dispatcher.register(Commands.literal("tnpc")
                 .then(Commands.literal("status").executes(context -> {
                     context.getSource().sendSuccess(
-                        () -> Component.literal("Six NPC variants, skins, and spawn eggs are registered. Teammate orders are basic; faction combat and TaCZ firing/reloading remain in development."),
+                        () -> Component.literal("Six NPC variants, skins, and spawn eggs are registered. Basic orders and TaCZ combat/reload logic are implemented in source; in-game validation remains."),
                         false
                     );
                     return Command.SINGLE_SUCCESS;
