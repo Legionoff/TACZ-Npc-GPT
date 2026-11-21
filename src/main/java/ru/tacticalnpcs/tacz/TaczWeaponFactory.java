@@ -51,10 +51,8 @@ public final class TaczWeaponFactory {
         IGun gunItem = IGun.getIGunOrNull(gun);
         if (gunItem == null) return ItemStack.EMPTY;
         return TimelessAPI.getCommonGunIndex(gunItem.getGunId(gun))
-            .map(index -> {
-                var ammo = BuiltInRegistries.ITEM.get(index.getGunData().getAmmoId());
-                return ammo == Items.AIR ? ItemStack.EMPTY : new ItemStack(ammo, amount);
-            })
+            .flatMap(index -> BuiltInRegistries.ITEM.get(index.getGunData().getAmmoId()))
+            .map(ammo -> ammo.value() == Items.AIR ? ItemStack.EMPTY : new ItemStack(ammo, amount))
             .orElse(ItemStack.EMPTY);
     }
 
