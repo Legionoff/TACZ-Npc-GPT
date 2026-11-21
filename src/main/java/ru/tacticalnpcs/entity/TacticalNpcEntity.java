@@ -43,8 +43,8 @@ public final class TacticalNpcEntity extends PathfinderMob {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(FACTION, Faction.TEAMMATE.name());
-        builder.define(NPC_CLASS, NpcClass.ASSAULT.name());
+        builder.define(FACTION, defaultFaction().name());
+        builder.define(NPC_CLASS, defaultClass().name());
         builder.define(ORDER, TeammateOrder.WANDER.name());
     }
 
@@ -120,6 +120,24 @@ public final class TacticalNpcEntity extends PathfinderMob {
         } catch (IllegalArgumentException | NullPointerException ignored) {
             return fallback;
         }
+    }
+
+    private Faction defaultFaction() {
+        EntityType<?> type = getType();
+        return type == ModEntityTypes.ENEMY_ASSAULT
+            || type == ModEntityTypes.ENEMY_MACHINE_GUNNER
+            || type == ModEntityTypes.ENEMY_SNIPER ? Faction.ENEMY : Faction.TEAMMATE;
+    }
+
+    private NpcClass defaultClass() {
+        EntityType<?> type = getType();
+        if (type == ModEntityTypes.TEAMMATE_MACHINE_GUNNER || type == ModEntityTypes.ENEMY_MACHINE_GUNNER) {
+            return NpcClass.MACHINE_GUNNER;
+        }
+        if (type == ModEntityTypes.TEAMMATE_SNIPER || type == ModEntityTypes.ENEMY_SNIPER) {
+            return NpcClass.SNIPER;
+        }
+        return NpcClass.ASSAULT;
     }
 
     public Faction getFaction() { return parseEnum(Faction.class, entityData.get(FACTION), Faction.TEAMMATE); }
