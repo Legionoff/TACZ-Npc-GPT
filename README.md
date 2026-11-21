@@ -1,9 +1,9 @@
-# Tactical NPCs — development foundation
+# Tactical NPCs — current implementation
 
 Target: Minecraft Java 26.3 / Fabric / Java 25  
 Requested TaCZ build: `0.8.5-beta1+fabric26.3` (Modrinth version ID `3BP2Kc1r`)
 
-## Included in this first source milestone
+## Implemented in source
 
 - Fabric 26.3 Gradle/Loom project skeleton.
 - Core enums for teammate/enemy factions, three classes, teammate orders and weapon categories.
@@ -15,23 +15,24 @@ Requested TaCZ build: `0.8.5-beta1+fabric26.3` (Modrinth version ID `3BP2Kc1r`)
 - Teammates support Follow, Hold Position, and Wander; right-click cycles the order.
 - Client humanoid renderer maps all six supplied skins to faction/class combinations.
 - Six faction/class spawn eggs are registered and added to the Spawn Eggs creative tab.
+- Faction-aware target selection: teammates target enemies and hostile mobs; enemies target teammates, players, and hostile mobs.
+- TaCZ shooting/reload integration uses the mod's living-entity shooter API, finite magazines, and replenished reserve ammo.
+- Class-specific engagement distances and aim spread; assault advances closer, machine gunners and snipers maintain distance.
 - `/tnpc status` development command.
 
 ## TaCZ API inspection
 
-See [`docs/TAcz-0.8.5-beta1-inspection.md`](docs/TAcz-0.8.5-beta1-inspection.md). The uploaded 0.8.5-beta1 JAR was inspected directly: live gun categories are `smg`, `rifle`, `mg`, and `sniper`; the adapter uses the verified `TimelessAPI` and `GunItemBuilder` APIs. NPC firing/reloading is not wired yet.
+See [`docs/TAcz-0.8.5-beta1-inspection.md`](docs/TAcz-0.8.5-beta1-inspection.md). The uploaded 0.8.5-beta1 JAR was inspected directly: live gun categories are `smg`, `rifle`, `mg`, and `sniper`; the adapter uses the verified `TimelessAPI` and `GunItemBuilder` APIs. The shooter integration is present in source; its in-game behavior still needs a client/server smoke test.
 
 ## Implemented TaCZ weapon factory
 
-`TaczWeaponFactory` now selects a random registered TaCZ gun from the live index and builds a finite loaded magazine for each class. TaCZ is a compile-only dependency and must be installed separately. This does not yet wire NPC firing or reload behavior.
+`TaczWeaponFactory` selects a random registered TaCZ gun from the live index and builds a finite loaded magazine for each class. The NPC replenishes reserve ammo and calls TaCZ's normal reload lifecycle. TaCZ is required at runtime and must be installed on both client and server.
 
 ## Not implemented yet
 
-This is **not a finished playable mod**. The current source builds in GitHub Actions, but has not been smoke-tested in Minecraft. Remaining runtime work:
-1. Add faction-aware target selection and class-specific combat goals.
-2. Wire TaCZ shooting, reload lifecycle, and infinite reserve ammo into the NPC entity.
-3. Add the requested spawn-egg glyphs (assault arrow, sniper crosshair, machine-gunner bullets) and class-specific tactical movement.
-4. Run client and dedicated-server smoke tests in Minecraft 26.3 with TaCZ installed.
+This is **not yet a verified playable mod**. The source compiles and packages in GitHub Actions, but the combat loop has not been tested in an actual Minecraft 26.3 client/server with TaCZ installed. Remaining work:
+1. Add the requested spawn-egg glyphs (assault arrow, sniper crosshair, machine-gunner bullets).
+2. Run client and dedicated-server smoke tests and fix any runtime integration issues.
 
 The TaCZ port's Modrinth page lists Minecraft 26.3 and Fabric support, but the project page does not publish its source code. The adapter is therefore kept isolated rather than using invented API symbols.
 
@@ -56,7 +57,7 @@ The build output will be under `build/libs/`.
 
 ## Important TaCZ note
 
-Install TaCZ separately on both client and server. It is not bundled or redistributed in this project.
+TaCZ Refabricated 0.8.5-beta1 for Fabric 26.3 is a required runtime dependency. Install it separately on both client and server; it is not bundled or redistributed in this project.
 
 
 ## GitHub Actions build (Java 25)
