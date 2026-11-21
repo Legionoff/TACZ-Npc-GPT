@@ -1,5 +1,8 @@
 package ru.tacticalnpcs.entity;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -78,6 +81,21 @@ public final class TacticalNpcEntity extends PathfinderMob {
                 getNavigation().stop();
             }
         }
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand != InteractionHand.MAIN_HAND || getFaction() != Faction.TEAMMATE) {
+            return InteractionResult.PASS;
+        }
+        TeammateOrder next = switch (getOrder()) {
+            case FOLLOW -> TeammateOrder.HOLD_POSITION;
+            case HOLD_POSITION -> TeammateOrder.WANDER;
+            case WANDER -> TeammateOrder.FOLLOW;
+        };
+        setOrder(next);
+        player.sendSystemMessage(Component.literal("Teammate order: " + next.name().toLowerCase().replace('_', ' ')));
+        return InteractionResult.SUCCESS;
     }
 
     @Override
