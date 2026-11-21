@@ -64,12 +64,29 @@ public final class TacticalNpcEntity extends PathfinderMob {
         goalSelector.addGoal(7, new OrderAwareWanderGoal());
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+            this, TacticalNpcEntity.class, 10, true, false,
+            candidate -> candidate.getFaction() != getFaction()
+        ));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
+            this, Player.class, 10, true, false,
+            candidate -> getFaction() == Faction.ENEMY
+        ));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
+            this, Monster.class, 10, true, false, candidate -> true
+        ));
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide() || getFaction() != Faction.TEAMMATE) return;
+        if (level().isClientSide()) return;
+
+        ensureTaczEquipment();
+        tickCombat();
+
+        if (getFaction() != Faction.TEAMMATE) return;
 
         if (getOrder() == TeammateOrder.HOLD_POSITION) {
             getNavigation().stop();
