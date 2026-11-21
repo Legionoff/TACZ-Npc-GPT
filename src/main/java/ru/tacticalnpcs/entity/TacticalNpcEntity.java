@@ -67,14 +67,14 @@ public final class TacticalNpcEntity extends PathfinderMob {
 
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<TacticalNpcEntity>(
             this, TacticalNpcEntity.class, 10, true, false,
-            candidate -> candidate.getFaction() != getFaction()
+            (candidate, serverLevel) -> candidate instanceof TacticalNpcEntity npc && npc.getFaction() != getFaction()
         ));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(
             this, Player.class, 10, true, false,
-            candidate -> getFaction() == Faction.ENEMY
+            (candidate, serverLevel) -> getFaction() == Faction.ENEMY
         ));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<Monster>(
-            this, Monster.class, 10, true, false, candidate -> true
+            this, Monster.class, 10, true, false, (candidate, serverLevel) -> true
         ));
     }
 
