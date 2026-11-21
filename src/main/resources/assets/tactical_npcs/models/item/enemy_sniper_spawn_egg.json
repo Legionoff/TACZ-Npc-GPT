@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tactical_npcs:item/enemy_sniper_spawn_egg"
+  }
+}

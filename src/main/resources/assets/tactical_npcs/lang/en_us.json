@@ -1,0 +1,14 @@
+{
+  "item.tactical_npcs.teammate_assault_spawn_egg": "Teammate Assault Spawn Egg",
+  "item.tactical_npcs.teammate_machine_gunner_spawn_egg": "Teammate Machine Gunner Spawn Egg",
+  "item.tactical_npcs.teammate_sniper_spawn_egg": "Teammate Sniper Spawn Egg",
+  "item.tactical_npcs.enemy_assault_spawn_egg": "Enemy Assault Spawn Egg",
+  "item.tactical_npcs.enemy_machine_gunner_spawn_egg": "Enemy Machine Gunner Spawn Egg",
+  "item.tactical_npcs.enemy_sniper_spawn_egg": "Enemy Sniper Spawn Egg",
+  "entity.tactical_npcs.teammate_assault": "Teammate Assault",
+  "entity.tactical_npcs.teammate_machine_gunner": "Teammate Machine Gunner",
+  "entity.tactical_npcs.teammate_sniper": "Teammate Sniper",
+  "entity.tactical_npcs.enemy_assault": "Enemy Assault",
+  "entity.tactical_npcs.enemy_machine_gunner": "Enemy Machine Gunner",
+  "entity.tactical_npcs.enemy_sniper": "Enemy Sniper"
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "tactical_npcs:item/enemy_sniper_spawn_egg"
+  }
+}

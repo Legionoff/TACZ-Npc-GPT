@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "tactical_npcs",
+  "version": "${version}",
+  "name": "Tactical NPCs",
+  "description": "Class-based allied and hostile tactical NPCs with TaCZ compatibility.",
+  "authors": ["Tactical NPCs"],
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["ru.tacticalnpcs.TacticalNpcs"],
+    "client": ["ru.tacticalnpcs.client.TacticalNpcsClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "26.3",
+    "fabric-api": "*",
+    "tacz": "*",
+    "java": ">=25"
+  }
+}
