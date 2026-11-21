@@ -1,0 +1,14 @@
+{
+  "item.tactical_npcs.teammate_assault_spawn_egg": "Яйцо призыва тиммейта-штурмовика",
+  "item.tactical_npcs.teammate_machine_gunner_spawn_egg": "Яйцо призыва тиммейта-пулемётчика",
+  "item.tactical_npcs.teammate_sniper_spawn_egg": "Яйцо призыва тиммейта-снайпера",
+  "item.tactical_npcs.enemy_assault_spawn_egg": "Яйцо призыва врага-штурмовика",
+  "item.tactical_npcs.enemy_machine_gunner_spawn_egg": "Яйцо призыва врага-пулемётчика",
+  "item.tactical_npcs.enemy_sniper_spawn_egg": "Яйцо призыва врага-снайпера",
+  "entity.tactical_npcs.teammate_assault": "Тиммейт-штурмовик",
+  "entity.tactical_npcs.teammate_machine_gunner": "Тиммейт-пулемётчик",
+  "entity.tactical_npcs.teammate_sniper": "Тиммейт-снайпер",
+  "entity.tactical_npcs.enemy_assault": "Враг-штурмовик",
+  "entity.tactical_npcs.enemy_machine_gunner": "Враг-пулемётчик",
+  "entity.tactical_npcs.enemy_sniper": "Враг-снайпер"
+}
