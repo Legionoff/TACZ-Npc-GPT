@@ -1,6 +1,6 @@
 package ru.tacticalnpcs.item;
 
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -32,13 +32,13 @@ public final class ModItems {
     }
 
     public static void initialize() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
-            entries.accept(TEAMMATE_ASSAULT_EGG);
-            entries.accept(TEAMMATE_MACHINE_GUNNER_EGG);
-            entries.accept(TEAMMATE_SNIPER_EGG);
-            entries.accept(ENEMY_ASSAULT_EGG);
-            entries.accept(ENEMY_MACHINE_GUNNER_EGG);
-            entries.accept(ENEMY_SNIPER_EGG);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(tab -> {
+            tab.accept(TEAMMATE_ASSAULT_EGG);
+            tab.accept(TEAMMATE_MACHINE_GUNNER_EGG);
+            tab.accept(TEAMMATE_SNIPER_EGG);
+            tab.accept(ENEMY_ASSAULT_EGG);
+            tab.accept(ENEMY_MACHINE_GUNNER_EGG);
+            tab.accept(ENEMY_SNIPER_EGG);
         });
     }
 }
