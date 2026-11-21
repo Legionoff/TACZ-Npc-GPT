@@ -65,15 +65,15 @@ public final class TacticalNpcEntity extends PathfinderMob {
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<TacticalNpcEntity>(
             this, TacticalNpcEntity.class, 10, true, false,
             candidate -> candidate.getFaction() != getFaction()
         ));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(
             this, Player.class, 10, true, false,
             candidate -> getFaction() == Faction.ENEMY
         ));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<Monster>(
             this, Monster.class, 10, true, false, candidate -> true
         ));
     }
@@ -126,7 +126,7 @@ public final class TacticalNpcEntity extends PathfinderMob {
         if (!(gun.getItem() instanceof IGun)) return;
 
         if (!taczGunDrawn) {
-            ((IGunOperator) this).draw(this::getMainHandItem);
+            IGunOperator.fromLivingEntity(this).draw(this::getMainHandItem);
             taczGunDrawn = true;
         }
 
@@ -161,7 +161,7 @@ public final class TacticalNpcEntity extends PathfinderMob {
 
         ItemStack gun = getMainHandItem();
         if (gunItem.getCurrentAmmoCount(gun) <= 0) {
-            ((IGunOperator) this).reload();
+            IGunOperator.fromLivingEntity(this).reload();
             return;
         }
 
@@ -178,7 +178,7 @@ public final class TacticalNpcEntity extends PathfinderMob {
         };
         float yawOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
         float pitchOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
-        ((IGunOperator) this).shoot(
+        IGunOperator.fromLivingEntity(this).shoot(
             () -> yaw + yawOffset,
             () -> pitch + pitchOffset,
             System.currentTimeMillis()
