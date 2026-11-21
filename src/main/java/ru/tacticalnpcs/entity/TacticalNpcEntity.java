@@ -111,6 +111,80 @@ public final class TacticalNpcEntity extends PathfinderMob {
         }
     }
 
+    private void ensureTaczEquipment() {
+        if (!TaczBridge.isAvailable()) return;
+
+        if (!(getMainHandItem().getItem() instanceof IGun)) {
+            ItemStack gun = TaczWeaponFactory.createRandomGun(getNpcClass(), level().registryAccess());
+            if (!gun.isEmpty()) {
+                setItemSlot(EquipmentSlot.MAINHAND, gun);
+                taczGunDrawn = false;
+            }
+        }
+
+        ItemStack gun = getMainHandItem();
+        if (!(gun.getItem() instanceof IGun)) return;
+
+        if (!taczGunDrawn) {
+            ((IGunOperator) this).draw(this::getMainHandItem);
+            taczGunDrawn = true;
+        }
+
+        ItemStack reserve = getOffhandItem();
+        if (reserve.isEmpty() || reserve.getCount() < 16) {
+            ItemStack replenished = TaczWeaponFactory.createReserveAmmo(gun, 64);
+            if (!replenished.isEmpty()) {
+                setItemSlot(EquipmentSlot.OFFHAND, replenished);
+            }
+        }
+    }
+
+    private void tickCombat() {
+        LivingEntity target = getTarget();
+        if (target == null || !target.isAlive() || target == this) return;
+        if (target instanceof TacticalNpcEntity other && other.getFaction() == getFaction()) {
+            setTarget(null);
+            return;
+        }
+        if (!(getMainHandItem().getItem() instanceof IGun gunItem)) return;
+
+        ClassTactics.CombatProfile profile = ClassTactics.combatProfile(getNpcClass());
+        double distance = distanceToSqr(target);
+        double maxRangeSqr = profile.preferredMaxRange() * profile.preferredMaxRange();
+
+        if (distance > maxRangeSqr) {
+            getNavigation().moveTo(target, getNpcClass() == NpcClass.ASSAULT ? 1.15 : 0.9);
+            return;
+        }
+        getNavigation().stop();
+        getLookControl().setLookAt(target, 30.0f, 30.0f);
+
+        ItemStack gun = getMainHandItem();
+        if (gunItem.getCurrentAmmoCount(gun) <= 0) {
+            ((IGunOperator) this).reload();
+            return;
+        }
+
+        double dx = target.getX() - getX();
+        double dy = target.getEyeY() - getEyeY();
+        double dz = target.getZ() - getZ();
+        double horizontal = Math.sqrt(dx * dx + dz * dz);
+        float yaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90.0);
+        float pitch = (float) -Math.toDegrees(Math.atan2(dy, horizontal));
+        float spread = switch (getNpcClass()) {
+            case ASSAULT -> 1.8f;
+            case MACHINE_GUNNER -> 4.5f;
+            case SNIPER -> 0.25f;
+        };
+        float yawOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
+        float pitchOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
+        ((IGunOperator) this).shoot(
+            () -> yaw + yawOffset,
+            () -> pitch + pitchOffset,
+            System.currentTimeMillis()
+        );
+    }
+
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (hand != InteractionHand.MAIN_HAND || getFaction() != Faction.TEAMMATE) {
