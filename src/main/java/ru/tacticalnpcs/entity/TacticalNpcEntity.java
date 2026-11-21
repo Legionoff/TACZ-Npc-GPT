@@ -150,10 +150,16 @@ public final class TacticalNpcEntity extends PathfinderMob {
 
         ClassTactics.CombatProfile profile = ClassTactics.combatProfile(getNpcClass());
         double distance = distanceToSqr(target);
-        double maxRangeSqr = profile.preferredMaxRange() * profile.preferredMaxRange();
-
-        if (distance > maxRangeSqr) {
+        double engageRange = profile.maneuverWhileFiring()
+            ? Math.max(8.0, profile.preferredMinRange() + 2.0)
+            : profile.preferredMaxRange();
+        if (distance > engageRange * engageRange) {
             getNavigation().moveTo(target, getNpcClass() == NpcClass.ASSAULT ? 1.15 : 0.9);
+            return;
+        }
+        if (!profile.maneuverWhileFiring() && distance < profile.preferredMinRange() * profile.preferredMinRange()) {
+            var retreat = position().subtract(target.position()).normalize();
+            getNavigation().moveTo(getX() + retreat.x * 8.0, getY(), getZ() + retreat.z * 8.0, 0.9);
             return;
         }
         getNavigation().stop();
