@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tactical_npcs:item/teammate_assault_spawn_egg"
+  }
+}
