@@ -1,11 +1,14 @@
 package ru.tacticalnpcs.tacz;
 
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import ru.tacticalnpcs.common.NpcClass;
 
 import java.util.ArrayList;
@@ -43,4 +46,16 @@ public final class TaczWeaponFactory {
             .setAmmoInBarrel(true)
             .build(registries);
     }
+    public static ItemStack createReserveAmmo(ItemStack gun, int amount) {
+        if (!TaczBridge.isAvailable() || gun.isEmpty()) return ItemStack.EMPTY;
+        IGun gunItem = IGun.getIGunOrNull(gun);
+        if (gunItem == null) return ItemStack.EMPTY;
+        return TimelessAPI.getCommonGunIndex(gunItem.getGunId(gun))
+            .map(index -> {
+                var ammo = BuiltInRegistries.ITEM.get(index.getGunData().getAmmoId());
+                return ammo == Items.AIR ? ItemStack.EMPTY : new ItemStack(ammo, amount);
+            })
+            .orElse(ItemStack.EMPTY);
+    }
+
 }
