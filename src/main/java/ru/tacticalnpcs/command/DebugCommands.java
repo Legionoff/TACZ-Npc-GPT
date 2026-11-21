@@ -13,7 +13,7 @@ public final class DebugCommands {
             dispatcher.register(Commands.literal("tnpc")
                 .then(Commands.literal("status").executes(context -> {
                     context.getSource().sendSuccess(
-                        () -> Component.literal("Tactical NPC entity registered. Combat, orders, spawn eggs, and client renderer are still in development."),
+                        () -> Component.literal("NPC entity and client skins are registered. Teammate orders are basic; faction combat, TaCZ firing/reloading, and spawn eggs remain unfinished."),
                         false
                     );
                     return Command.SINGLE_SUCCESS;
