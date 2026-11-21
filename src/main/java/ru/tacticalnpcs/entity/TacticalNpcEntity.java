@@ -1,7 +1,6 @@
 package ru.tacticalnpcs.entity;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,7 +23,7 @@ public final class TacticalNpcEntity extends PathfinderMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return PathfinderMob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 30.0)
             .add(Attributes.MOVEMENT_SPEED, 0.30)
             .add(Attributes.FOLLOW_RANGE, 48.0);
