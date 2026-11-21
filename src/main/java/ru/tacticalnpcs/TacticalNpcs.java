@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.tacticalnpcs.command.DebugCommands;
 import ru.tacticalnpcs.entity.ModEntityTypes;
+import ru.tacticalnpcs.item.ModItems;
 
 public final class TacticalNpcs implements ModInitializer {
     public static final String MOD_ID = "tactical_npcs";
@@ -13,7 +14,8 @@ public final class TacticalNpcs implements ModInitializer {
     @Override
     public void onInitialize() {
         ModEntityTypes.initialize();
+        ModItems.initialize();
         DebugCommands.register();
-        LOGGER.info("Tactical NPC entity registered.");
+        LOGGER.info("Tactical NPC entities and spawn eggs registered.");
     }
 }
