@@ -4,6 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.Identifier;
 import ru.tacticalnpcs.TacticalNpcs;
 import ru.tacticalnpcs.entity.TacticalNpcEntity;
@@ -18,6 +19,7 @@ public final class TacticalNpcRenderer extends MobRenderer<TacticalNpcEntity, Ta
 
     public TacticalNpcRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5f);
+        addLayer(new ItemInHandLayer<>(this));
     }
 
     private static Identifier skin(String name) {
