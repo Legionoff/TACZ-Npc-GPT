@@ -185,8 +185,8 @@ public final class TacticalNpcEntity extends PathfinderMob {
         float yawOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
         float pitchOffset = (random.nextFloat() * 2.0f - 1.0f) * spread;
         IGunOperator.fromLivingEntity(this).shoot(
-            () -> yaw + yawOffset,
             () -> pitch + pitchOffset,
+            () -> yaw + yawOffset,
             System.currentTimeMillis()
         );
     }
