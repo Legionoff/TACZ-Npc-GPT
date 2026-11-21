@@ -11,6 +11,7 @@ Requested TaCZ build: `0.8.5-beta1+fabric26.3` (Modrinth version ID `3BP2Kc1r`)
 - Basic faction targeting policy.
 - TaCZ compatibility boundary that deliberately refuses to call unverified APIs.
 - Six supplied 64x64 player skins copied unchanged into `assets/tactical_npcs/textures/entity/skins/`.
+- Registered `tactical_npcs:tactical_npc` living entity with health, movement attributes, and basic idle/wander/look goals.
 - `/tnpc status` development command.
 
 ## TaCZ API inspection
@@ -23,9 +24,9 @@ See [`docs/TAcz-0.8.5-beta1-inspection.md`](docs/TAcz-0.8.5-beta1-inspection.md)
 
 ## Not implemented yet
 
-This is **not a finished playable mod and does not produce a working NPC JAR yet**. The following runtime work remains:
-1. Register custom living NPC entity types and their spawn eggs.
-2. Add entity AI/navigation and class-specific combat goals.
+This is **not a finished playable mod**. The entity is registered and can be summoned for development checks, but its model/renderer and combat are not yet wired. Remaining runtime work:
+1. Add six faction/class spawn eggs and persist/synchronize faction, class, and order data.
+2. Add entity AI/navigation, faction-aware targeting, and class-specific combat goals.
 3. Add teammate order interaction/menu and persistence.
 4. Add client renderer/model and bind the six skin textures.
 5. Inspect the installed TaCZ 0.8.5-beta1 JAR to verify gun item data, firing and reload APIs, then implement the adapter.
