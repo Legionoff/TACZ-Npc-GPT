@@ -46,9 +46,37 @@ public final class TacticalNpcEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(7, new RandomStrollGoal(this, 0.8));
+        goalSelector.addGoal(7, new OrderAwareWanderGoal());
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide() || getFaction() != Faction.TEAMMATE) return;
+
+        if (getOrder() == TeammateOrder.HOLD_POSITION) {
+            getNavigation().stop();
+            return;
+        }
+        if (getOrder() == TeammateOrder.FOLLOW) {
+            Player closest = null;
+            double closestDistance = 48.0 * 48.0;
+            for (Player player : level().players()) {
+                if (player.isSpectator() || !player.isAlive()) continue;
+                double distance = distanceToSqr(player);
+                if (distance < closestDistance) {
+                    closest = player;
+                    closestDistance = distance;
+                }
+            }
+            if (closest != null && closestDistance > 3.0 * 3.0) {
+                getNavigation().moveTo(closest, 1.1);
+            } else {
+                getNavigation().stop();
+            }
+        }
     }
 
     @Override
@@ -81,4 +109,24 @@ public final class TacticalNpcEntity extends PathfinderMob {
     public void setNpcClass(NpcClass npcClass) { entityData.set(NPC_CLASS, npcClass.name()); }
     public TeammateOrder getOrder() { return parseEnum(TeammateOrder.class, entityData.get(ORDER), TeammateOrder.WANDER); }
     public void setOrder(TeammateOrder order) { entityData.set(ORDER, order.name()); }
+
+    private final class OrderAwareWanderGoal extends RandomStrollGoal {
+        private OrderAwareWanderGoal() {
+            super(TacticalNpcEntity.this, 0.8);
+        }
+
+        @Override
+        public boolean canUse() {
+            return getFaction() == Faction.TEAMMATE
+                && getOrder() == TeammateOrder.WANDER
+                && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return getFaction() == Faction.TEAMMATE
+                && getOrder() == TeammateOrder.WANDER
+                && super.canContinueToUse();
+        }
+    }
 }
